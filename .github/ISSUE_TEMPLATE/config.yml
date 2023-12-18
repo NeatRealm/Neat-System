@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Join our community on Discord
+    url: https://discord.gg/HWQZvpyKJx
+    about: The official Neat Realm server.
+  - name: Check out our Neat Game Engine
+    url: https://github.com/NeatRealm/Neat-Engine
+    about: Neat Game Engine GitHub repo
+  - name: Follow us on X (Twitter)
+    url: https://x.com/neatrealm
+    about: The official Neat Realm X account
+  - name: Follow us on Instagram
+    url: https://instagram.com/neatrealm
+    about: The official Neat Realm Instagram
