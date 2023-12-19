@@ -22,5 +22,5 @@ export function warn(message: string) {
 }
 export function error(message: string) {
   console.error(getTime() + message);
-  if (message) errorWebhook?.send(getTime() + message)
+  if (message) errorWebhook?.send(getTime() + message).catch((r) => console.error(r))
 }
