@@ -13,6 +13,7 @@
   "scripts": {
     "start": "tsc --build; node .",
     "test": "eslint --ext .ts src",
+    "lint": "eslint --fix --ext .ts src",
     "build": "tsc --build --verbose"
   },
   "repository": {
