@@ -1,5 +1,4 @@
 {
-  "type": "module",
   "version": "0.0.1",
   "main": "dist/index.js",
   "author": "NeatRealm (https://github.com/NeatRealm)",
