@@ -1,7 +1,7 @@
 import { existsSync, readdirSync } from "fs";
 import { basename, extname, join } from "path";
 
-interface loadDirOptions {
+interface ImportDirOptions {
   include?: RegExp,
   exclude?: RegExp,
   nest?: boolean, // Has no effect if shallow = true
@@ -14,7 +14,7 @@ function _concat(map: Map<unknown, unknown>, ...maps: Map<unknown, unknown>[]) {
 }
 
 // Imports a dir as a map
-export async function importDir(dirPath: string, options: loadDirOptions = {}) {
+export async function importDir(dirPath: string, options: ImportDirOptions = {}) {
   const map = new Map<string, unknown>()
 
   if (!existsSync(dirPath)) return map
