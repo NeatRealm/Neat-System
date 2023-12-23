@@ -8,36 +8,37 @@ interface ImportDirOptions {
   shallow?: boolean
 }
 
-function _concat(map: Map<unknown, unknown>, ...maps: Map<unknown, unknown>[]) {
-  for (const m of maps) for (const [k, v] of m) map.set(k, v)
-  return map
+export interface UnknownObject {
+  [key: string | number | symbol]: unknown
 }
 
-// Imports a dir as a map
-export async function importDir(dirPath: string, options: ImportDirOptions = {}) {
-  const map = new Map<string, unknown>()
+function _concat(obj: UnknownObject, ...objects: UnknownObject[]) {
+  for (const o of objects) for (const k in o) obj[k] = o[k]
+  return obj
+}
 
-  if (!existsSync(dirPath)) return map
+// Imports a dir as an object
+export async function importDir(dirPath: string, options: ImportDirOptions = {}) {
+  const obj: UnknownObject = {}
+
+  if (!existsSync(dirPath)) return obj
 
   const { include, exclude, nest, shallow } = options
 
-  const dir = readdirSync(dirPath, { withFileTypes: true })
-  for (const entry of dir) {
+  const dirEntries = readdirSync(dirPath, { withFileTypes: true })
+  for (const entry of dirEntries) {
     const entryPath = join(dirPath, entry.name)
     if (include && !include.test(entryPath)) continue
     if (exclude?.test(entryPath)) continue
     if (entry.isDirectory()) {
       if (shallow) continue
-      const subDir = importDir(entryPath, options)
-      if (nest) map.set(entry.name, subDir)
-      else _concat(map, await subDir)
-    } else if (extname(entry.name) === ".json") {
-      map.set(
-        basename(entry.name, extname(entry.name)),
-        (await import(entryPath))?.default
-      )
+      const subDir = await importDir(entryPath, options)
+      if (nest) obj[entry.name] = subDir
+      else _concat(obj, subDir)
+    } else if ([".json", ".js", ".ts"].includes(extname(entry.name))) {
+      obj[basename(entry.name, extname(entry.name))] = (await import(entryPath))?.default
     }
   }
 
-  return map
+  return obj
 }
